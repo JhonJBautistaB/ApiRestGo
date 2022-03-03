@@ -40,7 +40,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	user := models.Users{}
 	decoder := json.NewDecoder(r.Body)
 
-	if err := decoder.Decode(&user)
+	if err := decoder.Decode(&user); err != nil {
+		models.SendUnprocessableEntity(w)
+	}
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
