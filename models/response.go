@@ -14,7 +14,8 @@ type Response struct {
 	writer      http.ResponseWriter
 }
 
-func GetDefaultResponse(w http.ResponseWriter) Response {
+// crea una respuesta por defecto
+func CreateDefaultResponse(w http.ResponseWriter) Response {
 	return Response{
 		Status:      http.StatusOK,
 		writer:      w,
@@ -23,16 +24,30 @@ func GetDefaultResponse(w http.ResponseWriter) Response {
 
 }
 
+// Devuelve un mensaje de error cuando no encuentra información
 func (r *Response) NotFound(message string) {
 	r.Status = http.StatusNotFound
-	r.Data = nil
 	r.Message = message
 }
 
+// Envia mensaje Json solicitado
 func (r *Response) Send() {
 	r.writer.Header().Set("Content-Type", r.contentType)
 	r.writer.WriteHeader(r.Status)
-
 	output, _ := json.Marshal(&r)
 	fmt.Fprintf(r.writer, string(output))
+}
+
+// Envia un mensaje cuando no se encuentra información
+func SendNotFound(w http.ResponseWriter) {
+	response := CreateDefaultResponse(w)
+	response.NotFound("Send Not Found")
+	response.Send()
+}
+
+// Envia la información
+func SendData(w http.ResponseWriter, data interface{}) {
+	response := CreateDefaultResponse(w)
+	response.Data = data
+	response.Send()
 }

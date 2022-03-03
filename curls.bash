@@ -1,0 +1,1 @@
+curl http://localhost:8000/api/v1/users/ -X POST -d '{"username": "Eduardo", "password": "123456"}' -H "Content-Type: aplication/json"
