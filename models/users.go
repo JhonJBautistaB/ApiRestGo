@@ -33,3 +33,10 @@ func GetUser(userId int) (User, error) {
 	}
 	return User{}, errors.New("User is not map")
 }
+
+// Guardar un usuario
+func SaveUser(user User) User {
+	user.Id = len(users) + 1
+	users[user.Id] = user
+	return user
+}

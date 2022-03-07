@@ -37,11 +37,14 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintf(w, "Se crea un usuairo\n")
-	user := models.Users{}
+	user := models.User{}
 	decoder := json.NewDecoder(r.Body)
 
 	if err := decoder.Decode(&user); err != nil {
 		models.SendUnprocessableEntity(w)
+	} else {
+		models.SaveUser(user)
+		models.SendData(w, user)
 	}
 }
 
